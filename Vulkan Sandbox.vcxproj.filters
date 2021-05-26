@@ -39,15 +39,9 @@
     <ClCompile Include="gve_device.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="extensions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_one.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\skira\Desktop\my_engine_device.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gve_pipeline.hpp">

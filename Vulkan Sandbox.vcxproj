@@ -156,7 +156,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app_one.cpp" />
-    <ClCompile Include="extensions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="gve_testdevice.cpp" />
     <ClCompile Include="gve_pipeline.cpp" />
@@ -166,7 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app_one.hpp" />
-    <ClInclude Include="C:\Users\skira\Desktop\my_engine_device.hpp" />
     <ClInclude Include="gve_testdevice.hpp" />
     <ClInclude Include="gve_pipeline.hpp" />
     <ClInclude Include="gve_device.hpp" />

@@ -3,6 +3,7 @@
 
 #include "gve_window.hpp"
 #include <iostream>
+#include <optional>
 #include <stdexcept>
 
 namespace gve
@@ -28,6 +29,16 @@ namespace gve
 			func(instance, debugMessenger, pAllocator);
 		}
 	}
+
+	struct QueueFamilyIndices
+	{
+		std::optional<uint32_t> graphicsFamily;
+
+		bool isComplete()
+		{
+			return graphicsFamily.has_value();
+		}
+	};
 	
 	class GveDevice
 	{
@@ -48,12 +59,17 @@ namespace gve
 		
 		gve::GveWindow& window;
 		void createInstance();
+		void pickPhysicalDevice();
+		void createLogicalDevice();
 
+		bool isDeviceSuitable(VkPhysicalDevice device);
 
 		// Validation and Debug
 		void setupDebugMessenger();
 		void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 		bool checkValidationLayerSupport();
+
+		QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 		
 		static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
 			VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -65,6 +81,9 @@ namespace gve
 		
 		VkInstance instance;
 		VkDebugUtilsMessengerEXT debugMessenger;
+		VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+		VkDevice device;
+		VkQueue graphicsQueue;
 	};
 
 }
