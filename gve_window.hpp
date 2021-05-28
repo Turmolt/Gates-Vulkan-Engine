@@ -1,6 +1,7 @@
 #pragma once
 
 #define GLFW_INCLUDE_VULKAN
+#include <stdexcept>
 #include <string>
 #include <GLFW/glfw3.h>
 
@@ -18,6 +19,9 @@ namespace gve
 		GveWindow& operator=(const GveWindow&) = delete;
 
 		bool shouldClose() { return glfwWindowShouldClose(window); }
+
+		void createWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
+		void getFrameBufferSize(int& height, int& width);
 	
 	private:
 		void initWindow();
