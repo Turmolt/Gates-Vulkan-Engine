@@ -15,7 +15,7 @@ namespace gve
 	private:
 		GveWindow gveWindow{ WIDTH, HEIGHT, "Hello Vulkan!" };
 		GveDevice gveDevice{ gveWindow };
-		GvePipeline gvePipeline{ "shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv" };
+		GvePipeline gvePipeline{ gveDevice, "shaders/simple_shader.vert.spv", "shaders/simple_shader.frag.spv", {}};
 
 	};
 
