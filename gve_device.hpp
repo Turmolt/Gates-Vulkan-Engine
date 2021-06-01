@@ -53,7 +53,9 @@ namespace gve
 	public:
 		GveDevice(gve::GveWindow& window);
 		~GveDevice();
-		VkDevice getDevice() { return device; }
+		VkDevice device() { return _device; }
+		VkExtent2D swapChainExtent() { return _swapChainExtent; }
+		VkFormat swapChainImageFormat() { return _swapChainImageFormat; }
 	private:
 		const std::vector<const char*> validationLayers = {
 			"VK_LAYER_KHRONOS_validation"
@@ -105,15 +107,15 @@ namespace gve
 		VkInstance instance;
 		VkDebugUtilsMessengerEXT debugMessenger;
 		VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-		VkDevice device;
+		VkDevice _device;
 		VkQueue graphicsQueue;
 		VkQueue presentQueue;
 		VkSwapchainKHR swapChain;
 
 		std::vector<VkImage> swapChainImages;
 		std::vector<VkImageView> swapChainImageViews;
-		VkFormat swapChainImageFormat;
-		VkExtent2D swapChainExtent;
+		VkFormat _swapChainImageFormat;
+		VkExtent2D _swapChainExtent;
 	};
 
 }

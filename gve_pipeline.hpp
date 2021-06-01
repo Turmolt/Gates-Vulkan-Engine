@@ -15,7 +15,7 @@ namespace gve {
 			const std::string& vertFilePath, 
 			const std::string& fragFilePath, 
 			const PipelineConfigInfo& configInfo);
-		~GvePipeline() {}
+		~GvePipeline();
 
 		GvePipeline(const GvePipeline&) = delete;
 		void operator=(const GvePipeline&) = delete;
@@ -29,6 +29,10 @@ namespace gve {
 		VkPipeline graphicsPipeline;
 		VkShaderModule vertShaderModule;
 		VkShaderModule fragShaderModule;
+		VkRenderPass renderPass;
+		VkPipelineLayout pipelineLayout;
+
+		void createRenderPass();
 
 		void createGraphicsPipeline(
 			const std::string& vertFilePath,
