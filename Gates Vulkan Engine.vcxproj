@@ -98,6 +98,19 @@
       <AdditionalLibraryDirectories>C:\VulkanSDK\1.2.176.1\Lib;D:\Coding\C++\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>.\compile.bat</Command>
+      <Outputs>shaders/simple_shader.frag.spv shaders/simple_shader.vert.spv</Outputs>
+      <Message>Compiling Shaders...</Message>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -118,6 +131,19 @@
       <AdditionalLibraryDirectories>C:\VulkanSDK\1.2.176.1\Lib;D:\Coding\C++\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>.\compile.bat</Command>
+      <Outputs>shaders/simple_shader.frag.spv shaders/simple_shader.vert.spv</Outputs>
+      <Message>Compiling Shaders...</Message>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -134,6 +160,19 @@
       <AdditionalLibraryDirectories>C:\VulkanSDK\1.2.176.1\Lib;D:\Coding\C++\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>.\compile.bat</Command>
+      <Outputs>shaders/simple_shader.frag.spv shaders/simple_shader.vert.spv</Outputs>
+      <Message>Compiling Shaders...</Message>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -154,6 +193,19 @@
       <AdditionalLibraryDirectories>C:\VulkanSDK\1.2.176.1\Lib;D:\Coding\C++\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>.\compile.bat</Command>
+      <Outputs>shaders/simple_shader.frag.spv shaders/simple_shader.vert.spv</Outputs>
+      <Message>Compiling Shaders...</Message>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app_one.cpp" />
