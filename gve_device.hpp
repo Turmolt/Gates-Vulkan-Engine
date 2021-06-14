@@ -53,9 +53,30 @@ namespace gve
 	public:
 		GveDevice(gve::GveWindow& window);
 		~GveDevice();
+
+		GveDevice(const GveDevice&) = delete;
+		void operator=(const GveDevice&) = delete;
+		GveDevice(GveDevice&&) = delete;
+		GveDevice& operator=(GveDevice&&) = delete;
+
+		VkCommandPool getCommandPool() { return commandPool; }
 		VkDevice device() { return _device; }
 		VkExtent2D swapChainExtent() { return _swapChainExtent; }
+		VkSurfaceKHR surface() { return _surface; }
 		VkFormat swapChainImageFormat() { return _swapChainImageFormat; }
+
+		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+		SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(physicalDevice); }
+		QueueFamilyIndices findPhysicalQueueFamilies() { return findQueueFamilies(physicalDevice); }
+		VkQueue graphicsQueue() { return _graphicsQueue; }
+		VkQueue presentQueue() { return _presentQueue; }
+
+		VkFormat findSupportedFormat(
+			const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+		
+		void createImageWithInfo(const VkImageCreateInfo& imageInfo, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
+
+		VkPhysicalDeviceProperties properties;
 	private:
 		const std::vector<const char*> validationLayers = {
 			"VK_LAYER_KHRONOS_validation"
@@ -70,16 +91,12 @@ namespace gve
 #else
 		const bool enableValidationLayers = true;
 #endif
-
 		
-		gve::GveWindow& window;
 		void createInstance();
 		void pickPhysicalDevice();
 		void createLogicalDevice();
 		void createSurface();
 		void createCommandPool();
-		void createSwapChain();
-		void createImageViews();
 
 		bool isDeviceSuitable(VkPhysicalDevice device);
 		bool checkDeviceExtensionSupport(VkPhysicalDevice device);
@@ -100,16 +117,19 @@ namespace gve
 			VkDebugUtilsMessageTypeFlagsEXT messageType,
 			const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
 			void* pUserData);
-		VkSurfaceKHR surface;
+		VkSurfaceKHR _surface;
 
 		std::vector<const char*> getRequiredExtensions();
 		
 		VkInstance instance;
 		VkDebugUtilsMessengerEXT debugMessenger;
 		VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+		GveWindow& window;
+		VkCommandPool commandPool;
+
 		VkDevice _device;
-		VkQueue graphicsQueue;
-		VkQueue presentQueue;
+		VkQueue _graphicsQueue;
+		VkQueue _presentQueue;
 		VkSwapchainKHR swapChain;
 
 		std::vector<VkImage> swapChainImages;
