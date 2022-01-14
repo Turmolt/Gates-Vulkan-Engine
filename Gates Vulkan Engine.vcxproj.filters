@@ -21,7 +21,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="app_one.cpp">
+    <ClCompile Include="gve_engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="gve_window.hpp">
@@ -33,9 +33,6 @@
     <ClCompile Include="gve_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gve_testdevice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gve_device.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -44,13 +41,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="app_one.hpp">
+    <ClInclude Include="gve_engine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gve_pipeline.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gve_testdevice.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gve_device.hpp">

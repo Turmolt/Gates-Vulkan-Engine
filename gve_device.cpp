@@ -5,7 +5,7 @@
 
 namespace gve
 {
-	GveDevice::GveDevice(GveWindow& window) : window{ window }
+	GveDevice::GveDevice(GveWindow& window) : window{window}
 	{
 		createInstance();
 		setupDebugMessenger();
@@ -213,7 +213,6 @@ namespace gve
 
 		return requiredExtensions.empty();
 	}
-
 
 	void GveDevice::setupDebugMessenger()
 	{

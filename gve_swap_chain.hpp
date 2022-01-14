@@ -1,5 +1,6 @@
 #pragma once
 #include "gve_device.hpp"
+#include <memory>
 
 namespace gve
 {
@@ -9,9 +10,10 @@ namespace gve
 		static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
 		
 		GveSwapChain(GveDevice& deviceRef, VkExtent2D windowExtent);
+		GveSwapChain(GveDevice& deviceRef, VkExtent2D windowExtent, std::shared_ptr<GveSwapChain> previous);
 		~GveSwapChain();
 		GveSwapChain(const GveSwapChain&) = delete;
-		void operator=(const GveSwapChain&) = delete;
+		GveSwapChain &operator=(const GveSwapChain&) = delete;
 
 		VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
 		VkRenderPass getRenderPass() { return renderPass; }
@@ -32,6 +34,7 @@ namespace gve
 		VkResult submitCommandBuffers(const VkCommandBuffer* buffers, uint32_t* imageIndex);
 	
 	private:
+		void init();
 		void createSwapChain();
 		void createImageViews();
 		void createDepthResources();
@@ -60,6 +63,7 @@ namespace gve
 		VkExtent2D windowExtent;
 
 		VkSwapchainKHR swapChain;
+		std::shared_ptr<GveSwapChain> oldSwapChain;
 
 		std::vector<VkSemaphore> imageAvailableSemaphores;
 		std::vector<VkSemaphore> renderFinishedSemaphores;

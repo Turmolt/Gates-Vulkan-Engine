@@ -55,7 +55,7 @@ namespace gve
 		~GveDevice();
 
 		GveDevice(const GveDevice&) = delete;
-		void operator=(const GveDevice&) = delete;
+		GveDevice& operator=(const GveDevice&) = delete;
 		GveDevice(GveDevice&&) = delete;
 		GveDevice& operator=(GveDevice&&) = delete;
 
@@ -64,6 +64,7 @@ namespace gve
 		VkExtent2D swapChainExtent() { return _swapChainExtent; }
 		VkSurfaceKHR surface() { return _surface; }
 		VkFormat swapChainImageFormat() { return _swapChainImageFormat; }
+
 
 		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 		SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(physicalDevice); }

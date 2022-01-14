@@ -6,6 +6,19 @@ namespace gve
 {
 	GveSwapChain::GveSwapChain(GveDevice& deviceRef, VkExtent2D windowExtent) : gveDevice{deviceRef}, windowExtent{windowExtent}
 	{
+		init();
+	}
+
+	GveSwapChain::GveSwapChain(GveDevice& deviceRef, VkExtent2D windowExtent, std::shared_ptr<GveSwapChain> previous) : gveDevice{ deviceRef },
+		windowExtent{ windowExtent }, oldSwapChain{ previous }
+	{
+		init();
+
+		oldSwapChain = nullptr;
+	}
+
+	void GveSwapChain::init()
+	{
 		createSwapChain();
 		createImageViews();
 		createRenderPass();
@@ -56,7 +69,7 @@ namespace gve
 			1,
 			&inFlightFences[currentFrame],
 			VK_TRUE, 
-			std::numeric_limits<uint64_t>::max());
+			UINT64_MAX);
 
 		VkResult result = vkAcquireNextImageKHR(
 			gveDevice.device(),
@@ -163,7 +176,9 @@ namespace gve
 		createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
 		createInfo.presentMode = presentMode;
 		createInfo.clipped = VK_TRUE;
-		createInfo.oldSwapchain = VK_NULL_HANDLE;
+		createInfo.oldSwapchain = oldSwapChain == nullptr ? VK_NULL_HANDLE : oldSwapChain->swapChain;
+
+
 
 		if (vkCreateSwapchainKHR(gveDevice.device(), &createInfo, nullptr, &swapChain) != VK_SUCCESS)
 		{
@@ -347,6 +362,9 @@ namespace gve
 		}
 	}
 
+	/// <summary>
+	/// Create the semaphores and fences that are used to sync our program
+	/// </summary>
 	void GveSwapChain::createSyncObjects()
 	{
 		imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);

@@ -1,4 +1,4 @@
-#include "app_one.hpp"
+#include "gve_engine.hpp"
 
 //std
 #include <cstdlib>
@@ -6,11 +6,11 @@
 
 int main()
 {
-	gve::AppOne app{  };
+	gve::GveEngine gveEngine{  };
 
 	try
 	{
-		app.run();
+		gveEngine.run();
 	}catch (const std::exception &e)
 	{
 		std::cerr << e.what() << '\n';

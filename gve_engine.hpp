@@ -6,31 +6,36 @@
 
 #include <memory>
 #include <vector>
+#include <assert.h>
 
 namespace gve
 {
-	class AppOne
+	class GveEngine
 	{
 	public:
 		static constexpr int WIDTH = 800;
 		static constexpr int HEIGHT = 600;
 
-		AppOne();
-		~AppOne();
+		GveEngine();
+		~GveEngine();
 
-		AppOne(const AppOne&) = delete;
-		AppOne& operator=(const AppOne&) = delete;
+		GveEngine(const GveEngine&) = delete;
+		GveEngine& operator=(const GveEngine&) = delete;
 
 		void run();
+
 	private:
 		void createPipelineLayout();
 		void createPipeline();
 		void createCommandBuffers();
+		void freeCommandBuffers();
 		void drawFrame();
+		void recreateSwapChain();
+		void recordCommandBuffer(int imageIndex);
 		
-		GveWindow gveWindow{ WIDTH, HEIGHT, "Hello Vulkan!" };
+		GveWindow gveWindow{ WIDTH, HEIGHT, "Gates Vulkan Engine" };
 		GveDevice gveDevice{ gveWindow };
-		GveSwapChain gveSwapChain{ gveDevice, gveWindow.getExtent() };
+		std::unique_ptr<GveSwapChain> gveSwapChain;
 		std::unique_ptr<GvePipeline> gvePipeline;
 		VkPipelineLayout pipelineLayout;
 		std::vector<VkCommandBuffer> commandBuffers;
