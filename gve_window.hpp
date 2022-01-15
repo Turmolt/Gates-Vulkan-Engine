@@ -28,8 +28,6 @@ namespace gve
 		bool wasWindowResized() { return framebufferResized; }
 		void resetWindowResizedFlag() { framebufferResized = false; }
 
-		void setResizedParams(GLFWframebuffersizefun callback ,void* pointer);
-
 		void subscribeToWindowResized(std::function<void()> subscriber);
 		
 		GLFWwindow* getWindow() { return window; }

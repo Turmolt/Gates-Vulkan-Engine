@@ -4,6 +4,10 @@
 #include "gve_device.hpp"
 #include "gve_swap_chain.hpp"
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_vulkan.h"
+
 #include <memory>
 #include <vector>
 #include <assert.h>
@@ -32,6 +36,7 @@ namespace gve
 		void drawFrame();
 		void recreateSwapChain();
 		void recordCommandBuffer(int imageIndex);
+		void initImgui();
 		
 		GveWindow gveWindow{ WIDTH, HEIGHT, "Gates Vulkan Engine" };
 		GveDevice gveDevice{ gveWindow };
@@ -39,5 +44,6 @@ namespace gve
 		std::unique_ptr<GvePipeline> gvePipeline;
 		VkPipelineLayout pipelineLayout;
 		std::vector<VkCommandBuffer> commandBuffers;
+		VkDescriptorPool imguiPool;
 	};
 }

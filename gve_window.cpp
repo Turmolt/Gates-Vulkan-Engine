@@ -23,6 +23,8 @@ namespace gve
 
 		window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
 
+		glfwSetWindowSizeLimits(window, 200, 200, GLFW_DONT_CARE, GLFW_DONT_CARE);
+
 		glfwSetWindowUserPointer(window, this);
 		glfwSetFramebufferSizeCallback(window, framebufferResizedCallback);
 	}
@@ -33,7 +35,8 @@ namespace gve
 		gveWindow->framebufferResized = true;
 		gveWindow->width = width;
 		gveWindow->height = height;
-		gveWindow->invokeWindowResizedEvent();
+		if(width > 0 && height > 0)
+			gveWindow->invokeWindowResizedEvent();
 	}
 
 	void GveWindow::subscribeToWindowResized(std::function<void()> subscriber)

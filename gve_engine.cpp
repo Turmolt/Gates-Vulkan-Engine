@@ -13,11 +13,14 @@ namespace gve {
 			recreateSwapChain();
 			drawFrame();
 		});
+		initImgui();
 	}
 
 	GveEngine::~GveEngine()
 	{
-		vkDestroyPipelineLayout(gveDevice.device(), pipelineLayout, nullptr);
+		vkDestroyDescriptorPool(gveDevice.getDevice(), imguiPool, nullptr);
+		ImGui_ImplVulkan_Shutdown();
+		vkDestroyPipelineLayout(gveDevice.getDevice(), pipelineLayout, nullptr);
 	}
 	
 	void GveEngine::run()
@@ -28,7 +31,7 @@ namespace gve {
 			drawFrame();
 		}
 
-		vkDeviceWaitIdle(gveDevice.device());
+		vkDeviceWaitIdle(gveDevice.getDevice());
 	}
 
 	void GveEngine::createPipeline()
@@ -54,7 +57,7 @@ namespace gve {
 		pipelineLayoutInfo.pushConstantRangeCount = 0;
 		pipelineLayoutInfo.pPushConstantRanges = nullptr;
 
-		if (vkCreatePipelineLayout(gveDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS)
+		if (vkCreatePipelineLayout(gveDevice.getDevice(), &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to create pipeline layout!");
 		}
@@ -70,7 +73,7 @@ namespace gve {
 		allocInfo.commandPool = gveDevice.getCommandPool();
 		allocInfo.commandBufferCount = static_cast<uint32_t>(commandBuffers.size());
 
-		if(vkAllocateCommandBuffers(gveDevice.device(), &allocInfo, commandBuffers.data()) != VK_SUCCESS)
+		if(vkAllocateCommandBuffers(gveDevice.getDevice(), &allocInfo, commandBuffers.data()) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to allocate command buffers!");
 		}
@@ -79,7 +82,7 @@ namespace gve {
 	void GveEngine::freeCommandBuffers()
 	{
 		vkFreeCommandBuffers(
-			gveDevice.device(), 
+			gveDevice.getDevice(), 
 			gveDevice.getCommandPool(),
 			static_cast<uint32_t>(commandBuffers.size()),
 			commandBuffers.data());
@@ -133,6 +136,61 @@ namespace gve {
 		}
 	}
 
+
+	void GveEngine::initImgui()
+	{
+		//1: create descriptor pool for IMGUI
+		// the size of the pool is very oversize, but it's copied from imgui demo itself.
+		VkDescriptorPoolSize pool_sizes[] =
+		{
+			{ VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
+			{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
+			{ VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
+			{ VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
+			{ VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
+			{ VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
+			{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
+			{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
+			{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
+			{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
+			{ VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
+		};
+
+		VkDescriptorPoolCreateInfo pool_info = {};
+		pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+		pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+		pool_info.maxSets = 1000;
+		pool_info.poolSizeCount = std::size(pool_sizes);
+		pool_info.pPoolSizes = pool_sizes;
+
+		
+		vkCreateDescriptorPool(gveDevice.getDevice(), &pool_info, nullptr, &imguiPool);
+
+
+		// 2: initialize imgui library
+
+		//this initializes the core structures of imgui
+		ImGui::CreateContext();
+
+		//this initializes imgui for SDL
+		ImGui_ImplGlfw_InitForVulkan(gveWindow.getWindow(), false);
+
+		//this initializes imgui for Vulkan
+		ImGui_ImplVulkan_InitInfo init_info = {};
+		init_info.Instance = gveDevice.getInstance();
+		init_info.PhysicalDevice = gveDevice.getPhysicalDevice();
+		init_info.Device = gveDevice.getDevice();
+		init_info.Queue = gveDevice.getGraphicsQueue();
+		init_info.DescriptorPool = imguiPool;
+		init_info.MinImageCount = 3;
+		init_info.ImageCount = 3;
+		init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+
+		ImGui_ImplVulkan_Init(&init_info, gveSwapChain->getRenderPass());
+	}
+
+
+
 	/// <summary>
 	/// Draws the current frame
 	/// </summary>
@@ -152,6 +210,14 @@ namespace gve {
 		}
 
 		recordCommandBuffer(imageIndex);
+
+		//ImGui_ImplVulkan_NewFrame();
+		//ImGui_ImplGlfw_NewFrame();
+
+		//ImGui::NewFrame();
+
+		//ImGui::ShowDemoWindow();
+
 		result = gveSwapChain->submitCommandBuffers(&commandBuffers[imageIndex], &imageIndex);
 		if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || gveWindow.wasWindowResized())
 		{
@@ -163,6 +229,7 @@ namespace gve {
 		{
 			throw std::runtime_error("failed to present swap chain image!");
 		}
+
 	}
 
 
@@ -175,7 +242,7 @@ namespace gve {
 			glfwWaitEvents();
 		}
 
-		vkDeviceWaitIdle(gveDevice.device());
+		vkDeviceWaitIdle(gveDevice.getDevice());
 
 		if (gveSwapChain == nullptr) 
 		{

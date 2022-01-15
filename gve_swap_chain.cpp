@@ -30,49 +30,49 @@ namespace gve
 	GveSwapChain::~GveSwapChain(){
 		for (auto imageView : swapChainImageViews)
 		{
-			vkDestroyImageView(gveDevice.device(), imageView, nullptr);
+			vkDestroyImageView(gveDevice.getDevice(), imageView, nullptr);
 		}
 		swapChainImageViews.clear();
 
 		if(swapChain != nullptr)
 		{
-			vkDestroySwapchainKHR(gveDevice.device(), swapChain, nullptr);
+			vkDestroySwapchainKHR(gveDevice.getDevice(), swapChain, nullptr);
 			swapChain = nullptr;
 		}
 
 		for(int i = 0; i < depthImages.size(); i++)
 		{
-			vkDestroyImageView(gveDevice.device(), depthImageViews[i], nullptr);
-			vkDestroyImage(gveDevice.device(), depthImages[i], nullptr);
-			vkFreeMemory(gveDevice.device(), depthImageMemorys[i], nullptr);
+			vkDestroyImageView(gveDevice.getDevice(), depthImageViews[i], nullptr);
+			vkDestroyImage(gveDevice.getDevice(), depthImages[i], nullptr);
+			vkFreeMemory(gveDevice.getDevice(), depthImageMemorys[i], nullptr);
 		}
 
 		for(auto framebuffer : swapChainFramebuffers)
 		{
-			vkDestroyFramebuffer(gveDevice.device(), framebuffer, nullptr);
+			vkDestroyFramebuffer(gveDevice.getDevice(), framebuffer, nullptr);
 		}
 
-		vkDestroyRenderPass(gveDevice.device(), renderPass, nullptr);
+		vkDestroyRenderPass(gveDevice.getDevice(), renderPass, nullptr);
 
 		for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
-			vkDestroySemaphore(gveDevice.device(), renderFinishedSemaphores[i], nullptr);
-			vkDestroySemaphore(gveDevice.device(), imageAvailableSemaphores[i], nullptr);
-			vkDestroyFence(gveDevice.device(), inFlightFences[i], nullptr);
+			vkDestroySemaphore(gveDevice.getDevice(), renderFinishedSemaphores[i], nullptr);
+			vkDestroySemaphore(gveDevice.getDevice(), imageAvailableSemaphores[i], nullptr);
+			vkDestroyFence(gveDevice.getDevice(), inFlightFences[i], nullptr);
 		}
 	}
 
 	VkResult GveSwapChain::acquireNextImage(uint32_t* imageIndex)
 	{
 		vkWaitForFences(
-			gveDevice.device(),
+			gveDevice.getDevice(),
 			1,
 			&inFlightFences[currentFrame],
 			VK_TRUE, 
 			UINT64_MAX);
 
 		VkResult result = vkAcquireNextImageKHR(
-			gveDevice.device(),
+			gveDevice.getDevice(),
 			swapChain,
 			std::numeric_limits<uint64_t>::max(),
 			imageAvailableSemaphores[currentFrame],
@@ -86,7 +86,7 @@ namespace gve
 	{
 		if(imagesInFlight[*imageIndex] != VK_NULL_HANDLE)
 		{
-			vkWaitForFences(gveDevice.device(), 1, &imagesInFlight[*imageIndex], VK_TRUE, UINT64_MAX);
+			vkWaitForFences(gveDevice.getDevice(), 1, &imagesInFlight[*imageIndex], VK_TRUE, UINT64_MAX);
 		}
 		imagesInFlight[*imageIndex] = inFlightFences[currentFrame];
 
@@ -106,9 +106,9 @@ namespace gve
 		submitInfo.signalSemaphoreCount = 1;
 		submitInfo.pSignalSemaphores = signalSemaphores;
 
-		vkResetFences(gveDevice.device(), 1, &inFlightFences[currentFrame]);
+		vkResetFences(gveDevice.getDevice(), 1, &inFlightFences[currentFrame]);
 
-		if(vkQueueSubmit(gveDevice.graphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS)
+		if(vkQueueSubmit(gveDevice.getGraphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to submit draw command buffer!");
 		}
@@ -180,14 +180,14 @@ namespace gve
 
 
 
-		if (vkCreateSwapchainKHR(gveDevice.device(), &createInfo, nullptr, &swapChain) != VK_SUCCESS)
+		if (vkCreateSwapchainKHR(gveDevice.getDevice(), &createInfo, nullptr, &swapChain) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to create swap chain!");
 		}
 
-		vkGetSwapchainImagesKHR(gveDevice.device(), swapChain, &imageCount, nullptr);
+		vkGetSwapchainImagesKHR(gveDevice.getDevice(), swapChain, &imageCount, nullptr);
 		swapChainImages.resize(imageCount);
-		vkGetSwapchainImagesKHR(gveDevice.device(), swapChain, &imageCount, swapChainImages.data());
+		vkGetSwapchainImagesKHR(gveDevice.getDevice(), swapChain, &imageCount, swapChainImages.data());
 
 		swapChainImageFormat = surfaceFormat.format;
 		swapChainExtent = extent;
@@ -216,7 +216,7 @@ namespace gve
 			createInfo.subresourceRange.baseArrayLayer = 0;
 			createInfo.subresourceRange.layerCount = 1;
 
-			if (vkCreateImageView(gveDevice.device(), &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS)
+			if (vkCreateImageView(gveDevice.getDevice(), &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS)
 			{
 				throw std::runtime_error("failed to create image views!");
 			}
@@ -277,7 +277,7 @@ namespace gve
 		renderPassInfo.dependencyCount = 1;
 		renderPassInfo.pDependencies = &dependency;
 
-		if (vkCreateRenderPass(gveDevice.device(), &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
+		if (vkCreateRenderPass(gveDevice.getDevice(), &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to create render pass!");
 		}
@@ -301,7 +301,7 @@ namespace gve
 			framebufferInfo.layers = 1;
 
 			if(vkCreateFramebuffer(
-				gveDevice.device(),
+				gveDevice.getDevice(),
 				&framebufferInfo,
 				nullptr,
 				&swapChainFramebuffers[i]) != VK_SUCCESS)
@@ -355,7 +355,7 @@ namespace gve
 			viewInfo.subresourceRange.baseArrayLayer = 0;
 			viewInfo.subresourceRange.layerCount = 1;
 
-			if(vkCreateImageView(gveDevice.device(), &viewInfo, nullptr, &depthImageViews[i]) != VK_SUCCESS)
+			if(vkCreateImageView(gveDevice.getDevice(), &viewInfo, nullptr, &depthImageViews[i]) != VK_SUCCESS)
 			{
 				throw std::runtime_error("failed to create texture image view!");
 			}
@@ -381,9 +381,9 @@ namespace gve
 
 		for(size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
 		{
-			if(vkCreateSemaphore(gveDevice.device(), &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
-				vkCreateSemaphore(gveDevice.device(), &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS ||
-				vkCreateFence(gveDevice.device(), &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS)
+			if(vkCreateSemaphore(gveDevice.getDevice(), &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
+				vkCreateSemaphore(gveDevice.getDevice(), &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS ||
+				vkCreateFence(gveDevice.getDevice(), &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS)
 			{
 				throw std::runtime_error("failed to create synchronization objects for a frame!");
 			}

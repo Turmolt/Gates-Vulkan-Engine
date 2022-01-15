@@ -60,16 +60,18 @@ namespace gve
 		GveDevice& operator=(GveDevice&&) = delete;
 
 		VkCommandPool getCommandPool() { return commandPool; }
-		VkDevice device() { return _device; }
+		VkDevice getDevice() { return _device; }
 		VkExtent2D swapChainExtent() { return _swapChainExtent; }
 		VkSurfaceKHR surface() { return _surface; }
+		VkInstance getInstance() { return instance; }
 		VkFormat swapChainImageFormat() { return _swapChainImageFormat; }
+		VkPhysicalDevice getPhysicalDevice() { return physicalDevice; }
 
 
 		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 		SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(physicalDevice); }
 		QueueFamilyIndices findPhysicalQueueFamilies() { return findQueueFamilies(physicalDevice); }
-		VkQueue graphicsQueue() { return _graphicsQueue; }
+		VkQueue getGraphicsQueue() { return _graphicsQueue; }
 		VkQueue presentQueue() { return _presentQueue; }
 
 		VkFormat findSupportedFormat(
@@ -78,6 +80,7 @@ namespace gve
 		void createImageWithInfo(const VkImageCreateInfo& imageInfo, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
 
 		VkPhysicalDeviceProperties properties;
+
 	private:
 		const std::vector<const char*> validationLayers = {
 			"VK_LAYER_KHRONOS_validation"

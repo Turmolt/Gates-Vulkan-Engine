@@ -18,11 +18,11 @@ namespace gve
 
 	GvePipeline::~GvePipeline()
 	{
-		vkDestroyShaderModule(gveDevice.device(), fragShaderModule, nullptr);
-		vkDestroyShaderModule(gveDevice.device(), vertShaderModule, nullptr);
-		vkDestroyPipeline(gveDevice.device(), graphicsPipeline, nullptr);
-		vkDestroyPipelineLayout(gveDevice.device(), pipelineLayout, nullptr);
-		vkDestroyRenderPass(gveDevice.device(), renderPass, nullptr);
+		vkDestroyShaderModule(gveDevice.getDevice(), fragShaderModule, nullptr);
+		vkDestroyShaderModule(gveDevice.getDevice(), vertShaderModule, nullptr);
+		vkDestroyPipeline(gveDevice.getDevice(), graphicsPipeline, nullptr);
+		vkDestroyPipelineLayout(gveDevice.getDevice(), pipelineLayout, nullptr);
+		vkDestroyRenderPass(gveDevice.getDevice(), renderPass, nullptr);
 	}
 	
 	std::vector<char> GvePipeline::readFile(const std::string& filepath)
@@ -72,7 +72,7 @@ namespace gve
 		renderPassInfo.subpassCount = 1;
 		renderPassInfo.pSubpasses = &subpass;
 
-		if(vkCreateRenderPass(gveDevice.device(), &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
+		if(vkCreateRenderPass(gveDevice.getDevice(), &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to create render pass!");
 		}
@@ -86,7 +86,7 @@ namespace gve
 		createInfo.codeSize = code.size();
 		createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
-		if (vkCreateShaderModule(gveDevice.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS)
+		if (vkCreateShaderModule(gveDevice.getDevice(), &createInfo, nullptr, shaderModule) != VK_SUCCESS)
 		{
 			throw std::runtime_error("failed to create shader module!");
 		}
@@ -144,7 +144,7 @@ namespace gve
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
 		if (vkCreateGraphicsPipelines(
-			gveDevice.device(),
+			gveDevice.getDevice(),
 			VK_NULL_HANDLE,
 			1,
 			&pipelineInfo,
