@@ -5,3 +5,5 @@ I am just going through the contents of some things I have found to learn the da
 https://vulkan-tutorial.com/
 
 https://www.youtube.com/watch?v=Y9U9IE0gVHA
+
+https://vkguide.dev/
