@@ -9,6 +9,7 @@ namespace gve {
 		recreateSwapChain();
 		createCommandBuffers();
 		gveWindow.subscribeToWindowResized([this]() {
+			glfwWaitEvents();
 			gveWindow.resetWindowResizedFlag();
 			recreateSwapChain();
 			drawFrame();
@@ -67,11 +68,7 @@ namespace gve {
 	{
 		commandBuffers.resize(gveSwapChain->imageCount());
 		
-		VkCommandBufferAllocateInfo allocInfo{};
-		allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-		allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-		allocInfo.commandPool = gveDevice.getCommandPool();
-		allocInfo.commandBufferCount = static_cast<uint32_t>(commandBuffers.size());
+		VkCommandBufferAllocateInfo allocInfo = vkinit::command_buffer_allocate_info(gveDevice.getCommandPool(), static_cast<uint32_t>(commandBuffers.size()), VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
 		if(vkAllocateCommandBuffers(gveDevice.getDevice(), &allocInfo, commandBuffers.data()) != VK_SUCCESS)
 		{
@@ -99,13 +96,12 @@ namespace gve {
 			throw std::runtime_error("failed to begin recording command buffer!");
 		}
 
-		VkRenderPassBeginInfo renderPassInfo{};
-		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-		renderPassInfo.renderPass = gveSwapChain->getRenderPass();
-		renderPassInfo.framebuffer = gveSwapChain->getFrameBuffer(imageIndex);
-
-		renderPassInfo.renderArea.offset = { 0,  0 };
-		renderPassInfo.renderArea.extent = gveSwapChain->getSwapChainExtent();
+		VkRenderPassBeginInfo renderPassInfo = 
+			vkinit::render_pass_begin_info(
+				gveSwapChain->getRenderPass(),
+				gveSwapChain->getFrameBuffer(imageIndex),
+				gveSwapChain->getSwapChainExtent()
+			);
 
 		std::array<VkClearValue, 2> clearValues{};
 		clearValues[0].color = { 0.1f, 0.1f, 0.1f, 1.0f };
@@ -118,11 +114,13 @@ namespace gve {
 		VkViewport viewport{};
 		viewport.x = 0.0f;
 		viewport.y = 0.0f;
-		viewport.width = static_cast<float>(gveSwapChain->getSwapChainExtent().width);
-		viewport.height = static_cast<float>(gveSwapChain->getSwapChainExtent().height);
+
+		auto extent = gveSwapChain->getSwapChainExtent();
+		viewport.width = static_cast<float>(extent.width);
+		viewport.height = static_cast<float>(extent.height);
 		viewport.minDepth = 0.0f;
 		viewport.maxDepth = 1.0f;
-		VkRect2D scissor{ {0, 0}, gveSwapChain->getSwapChainExtent() };
+		VkRect2D scissor{ {0, 0}, extent };
 		vkCmdSetViewport(commandBuffers[imageIndex], 0, 1, &viewport);
 		vkCmdSetScissor(commandBuffers[imageIndex], 0, 1, &scissor);
 

@@ -3,6 +3,7 @@
 #include "gve_pipeline.hpp"
 #include "gve_device.hpp"
 #include "gve_swap_chain.hpp"
+#include "gve_vk_initializers.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -11,6 +12,18 @@
 #include <memory>
 #include <vector>
 #include <assert.h>
+
+#define VK_CHECK(x)                                                 \
+	do                                                              \
+	{                                                               \
+		VkResult err = x;                                           \
+		if (err)                                                    \
+		{                                                           \
+			std::cout <<"Detected Vulkan error: " << err << std::endl; \
+			abort();                                                \
+		}                                                           \
+	} while (0)
+
 
 namespace gve
 {

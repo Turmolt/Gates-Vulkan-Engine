@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "gve_vk_initializers.h"
 
 #include "gve_window.hpp"
 #include <iostream>

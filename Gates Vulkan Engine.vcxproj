@@ -209,6 +209,7 @@
   <ItemGroup>
     <ClCompile Include="gve_engine.cpp" />
     <ClCompile Include="gve_swap_chain.cpp" />
+    <ClCompile Include="gve_vk_initializers.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="gve_swap_chain.hpp" />
     <ClInclude Include="gve_pipeline.hpp" />
     <ClInclude Include="gve_device.hpp" />
+    <ClInclude Include="gve_vk_initializers.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />
