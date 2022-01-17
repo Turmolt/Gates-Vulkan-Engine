@@ -13,6 +13,8 @@
 #include <vector>
 #include <assert.h>
 
+
+
 #define VK_CHECK(x)                                                 \
 	do                                                              \
 	{                                                               \

@@ -26,6 +26,7 @@ namespace gve
 		void createWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
 		void getFrameBufferSize(int& height, int& width);
 		bool wasWindowResized() { return framebufferResized; }
+		bool isIconified() { return iconified; }
 		void resetWindowResizedFlag() { framebufferResized = false; }
 
 		void subscribeToWindowResized(std::function<void()> subscriber);
@@ -35,11 +36,13 @@ namespace gve
 	private:
 
 		static void framebufferResizedCallback(GLFWwindow* window, int width, int height);
+		static void windowIconifiedCallback(GLFWwindow* window, int iconified);
 		void initWindow();
 
 		int width;
 		int height;
 		bool framebufferResized = false;
+		bool iconified = false;
 
 		void invokeWindowResizedEvent();
 		std::vector<std::function<void()>> onWindowResizedSubscribers;

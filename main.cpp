@@ -3,9 +3,12 @@
 //std
 #include <cstdlib>
 #include <iostream>
+#include <Windows.h>
 
 int main()
 {
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+
 	gve::GveEngine gveEngine{  };
 
 	try

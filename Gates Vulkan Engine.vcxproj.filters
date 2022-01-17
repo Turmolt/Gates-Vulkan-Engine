@@ -19,7 +19,10 @@
     <Filter Include="Source Files\imgui">
       <UniqueIdentifier>{072afa68-3e96-4df8-84df-84a474b0ee8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\imgui">
+    <Filter Include="Header Files\libraries">
+      <UniqueIdentifier>{1d48a76b-fcc7-4660-8b5e-d9e68f8772f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\libraries\imgui">
       <UniqueIdentifier>{32b1172a-e53f-481c-ac74-f3ea7377fdcd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -69,6 +72,9 @@
     <ClCompile Include="gve_vk_initializers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gve_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gve_engine.hpp">
@@ -84,30 +90,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_glfw.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_vulkan.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_internal.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_rectpack.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_textedit.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_truetype.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui.h">
-      <Filter>Header Files\imgui</Filter>
+      <Filter>Header Files\libraries\imgui</Filter>
     </ClInclude>
     <ClInclude Include="gve_vk_initializers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\stb_image.h">
+      <Filter>Header Files\libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="gve_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
