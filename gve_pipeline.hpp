@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "gve_device.hpp"
+#include "gve_model.h"
 
 namespace gve {
 

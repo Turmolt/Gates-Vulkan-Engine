@@ -7,7 +7,7 @@
 
 int main()
 {
-	ShowWindow(GetConsoleWindow(), SW_HIDE);
+//	ShowWindow(GetConsoleWindow(), SW_HIDE);
 
 	gve::GveEngine gveEngine{  };
 

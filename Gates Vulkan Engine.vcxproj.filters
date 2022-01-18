@@ -75,6 +75,9 @@
     <ClCompile Include="gve_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gve_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gve_engine.hpp">
@@ -122,6 +125,12 @@
     <ClInclude Include="gve_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gve_model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="compile.bat" />
@@ -131,5 +140,10 @@
     <None Include="shaders\simple_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Gates Vulkan Engine.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

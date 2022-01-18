@@ -5,6 +5,7 @@
 namespace gve {
 	GveEngine::GveEngine()
 	{
+		loadModels();
 		createPipelineLayout();
 		recreateSwapChain();
 		createCommandBuffers();
@@ -33,6 +34,14 @@ namespace gve {
 		}
 
 		vkDeviceWaitIdle(gveDevice.getDevice());
+	}
+
+	void GveEngine::loadModels() {
+		std::vector<GveModel::Vertex> vertices{
+			{{0.0f, -0.75f}, {1.0f, 0.0f, 0.0f}},
+			{{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+			{{-0.5f, 0.75f}, {0.0f, 0.0f, 1.0f}} };
+		gveModel = std::make_unique<GveModel>(gveDevice, vertices);
 	}
 
 	void GveEngine::createPipeline()
@@ -125,7 +134,8 @@ namespace gve {
 		vkCmdSetScissor(commandBuffers[imageIndex], 0, 1, &scissor);
 
 		gvePipeline->bind(commandBuffers[imageIndex]);
-		vkCmdDraw(commandBuffers[imageIndex], 3, 1, 0, 0);
+		gveModel->bind(commandBuffers[imageIndex]);
+		gveModel->draw(commandBuffers[imageIndex]);
 
 		vkCmdEndRenderPass(commandBuffers[imageIndex]);
 		if (vkEndCommandBuffer(commandBuffers[imageIndex]) != VK_SUCCESS)

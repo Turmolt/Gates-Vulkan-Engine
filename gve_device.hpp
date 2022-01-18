@@ -68,6 +68,7 @@ namespace gve
 		VkFormat swapChainImageFormat() { return _swapChainImageFormat; }
 		VkPhysicalDevice getPhysicalDevice() { return physicalDevice; }
 
+		void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
 
 		uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 		SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(physicalDevice); }

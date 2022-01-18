@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 #include <assert.h>
-
+#include "gve_model.h"
 
 
 #define VK_CHECK(x)                                                 \
@@ -44,6 +44,7 @@ namespace gve
 		void run();
 
 	private:
+		void loadModels();
 		void createPipelineLayout();
 		void createPipeline();
 		void createCommandBuffers();
@@ -60,5 +61,6 @@ namespace gve
 		VkPipelineLayout pipelineLayout;
 		std::vector<VkCommandBuffer> commandBuffers;
 		VkDescriptorPool imguiPool;
+		std::unique_ptr<GveModel> gveModel;
 	};
 }
